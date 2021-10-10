@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoderByte_DAL.Extensions;
+using CoderByte_DAL.Repositories;
+using CoderByte_DAL.Repositories.Interfaces;
+using CoderByte_WebApp.UiServices;
+using CoderByte_WebApp.UiServices.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,8 +28,13 @@ namespace CoderByte_WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddInterviewDataContext(connectionString);
             services.AddControllersWithViews();
-            services.AddDbContext;
+            services.AddTransient<ILossTypesRepository, LossTypesRepository>();
+
+            services.AddTransient<ILossTypesUiService, LossTypesUiService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
